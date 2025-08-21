@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  netlogo-web:
+    image: netlogo-web:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - PLAY_HTTP_SECRET_KEY=MzIgYnl0ZXMgb2YgY29tcGxldGVseSByYW5kb20gaW5wdXQ=
+      - SBT_OPTS=-Xmx2G -XX:+UseG1GC
+      - JAVA_OPTS=-Xmx2G -XX:+UseG1GC
+    volumes:
+      # 挂载源代码以支持热重载（开发模式）
+      - .:/app
+      # 映射模型库目录，允许用户自定义 NetLogo 文件
+      - ./public/modelslib:/app/public/modelslib
+      # 缓存 SBT 依赖以加速重启
+      - sbt-cache:/root/.sbt
+      - ivy-cache:/root/.ivy2
+      # 缓存 npm 依赖
+      - npm-cache:/root/.npm
+      - node-modules:/app/node_modules
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+volumes:
+  sbt-cache:
+  ivy-cache:
+  npm-cache:
+  node-modules:

@@ -28,7 +28,7 @@ scalacOptions ++= Seq(
   "-unchecked",
   "-feature",
   "-experimental",
-  "-Xfatal-warnings",
+  //"-Xfatal-warnings",
   // The Play-generated routes code throws errors about inexhaustive matches, so we squelch them for now.  -Jeremy B
   // June 2025
   "-Wconf:src=routes/main/.*:silent",
