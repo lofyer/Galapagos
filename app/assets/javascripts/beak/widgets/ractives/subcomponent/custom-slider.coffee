@@ -1,19 +1,19 @@
-import Ractive from "ractive"
-
 RactiveCustomSlider = Ractive.extend({
 
   data: -> {
-    value: 0                       # Number
-    min: 0                           # Number
-    max: 100                         # Number
-    step: 1                          # Number
-    isEnabled: true                  # Boolean
-    class: null                      # String
-    onValueChange: null              # Function
-    inputFor: null                   # String (id of an input element to update on change)
-    maxDecimal: 2                    # Number
-    ariaLabel: "Custom Slider"       # String
-    orientation: "horizontal"        # String ("horizontal" or "vertical" (rotated 270 degrees))
+    value:         0               # Number
+    min:           0               # Number
+    max:           100             # Number
+    step:          1               # Number
+    snapTo:        undefined       # Number
+    snapTolerance: undefined       # Number
+    isEnabled:     true            # Boolean
+    class:         null            # String
+    onValueChange: null            # Function
+    inputFor:      null            # String (id of an input element to update on change)
+    maxDecimal:    2               # Number
+    ariaLabel:     "Custom Slider" # String
+    orientation:   "horizontal"    # String ("horizontal" or "vertical" (rotated 270 degrees))
   }
 
   computed: {
@@ -54,6 +54,25 @@ RactiveCustomSlider = Ractive.extend({
             input.value = newValue
             input.dispatchEvent(new Event("change", { bubbles: true }))
 
+    return
+
+  maybeSnapValue: () ->
+    snapTo        = @get('snapTo')
+    snapTolerance = @get('snapTolerance')
+    if snapTo? and snapTolerance?
+      min       = @get('min')
+      max       = @get('max')
+      range     = max - min
+      snapSize  = range * snapTolerance / 100
+      leftSnap  = snapTo - snapSize
+      rightSnap = snapTo + snapSize
+      value     = @get('value')
+      if (value isnt snapTo) and (leftSnap < value) and (value < rightSnap)
+        @set('value', value)
+        @updateValue(snapTo)
+
+    return
+
   getClientPosition: (event) ->
     switch @get('orientation')
       when 'horizontal' then event.clientX or event.touches?[0]?.clientX
@@ -72,7 +91,7 @@ RactiveCustomSlider = Ractive.extend({
     # CSS, the bounding box changes but the node's offsetWidth/Height
     # do not. -Omar I. Aug 14, 2025
     return node.offsetWidth
-    
+
   getSliderStart: (node) ->
     rect = node.getBoundingClientRect()
     switch @get('orientation')
@@ -81,7 +100,7 @@ RactiveCustomSlider = Ractive.extend({
       else throw new Error("Invalid orientation: #{@get('orientation')}")
 
   on: {
-    "start-drag": (event) ->
+    'start-drag': (event) ->
       slider = this
 
       sliderLength = slider.getSliderLengthFromNode(event.node)
@@ -103,12 +122,15 @@ RactiveCustomSlider = Ractive.extend({
         val = parseFloat(val.toFixed(slider.get("maxDecimal")))
 
         slider.updateValue(val)
+        return
 
       stop = ->
         window.removeEventListener("mousemove", move)
         window.removeEventListener("mouseup", stop)
         window.removeEventListener("touchmove", move)
         window.removeEventListener("touchend", stop)
+        slider.maybeSnapValue()
+        return
 
       window.addEventListener("mousemove", move)
       window.addEventListener("mouseup", stop)
@@ -116,8 +138,8 @@ RactiveCustomSlider = Ractive.extend({
       window.addEventListener("touchend", stop)
       move(event.original)
       event.original.preventDefault()
-    
-    "keydown": (event) ->
+
+    'keydown': (event) ->
       if not @get("isEnabled")
         return
 
@@ -136,6 +158,8 @@ RactiveCustomSlider = Ractive.extend({
           val += step
 
         @updateValue(val)
+
+      return
 
   }
 

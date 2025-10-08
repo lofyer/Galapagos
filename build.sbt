@@ -13,7 +13,7 @@ import scala.sys.process.{ Process, ProcessLogger }
 name    := "Galapagos"
 version := "1.0-SNAPSHOT"
 
-val tortoiseVersion = "1.0-2f7bb74"
+val tortoiseVersion = "1.0-60e16f6"
 
 resolvers ++= Seq(
   "tortoise"                at "https://dl.cloudsmith.io/public/netlogo/tortoise/maven/"
@@ -305,6 +305,7 @@ scrapeRoutes ++= Seq(
   "/standalone",
   "/launch",
   "/web",
+  "/jumpto",
   "/nettango-builder",
   "/nettango-library",
   "/nettango-player",
@@ -315,6 +316,9 @@ scrapeRoutes ++= Seq(
   )
 
 scrapeDelay := 120
+
+// enable this when any file metadata changes are made (usually in the `Play-Scraper` project)
+// scrapeForceUpload := true
 
 def isBuildServer: Boolean = !Option(System.getenv("BUILD_SERVER")).isEmpty
 

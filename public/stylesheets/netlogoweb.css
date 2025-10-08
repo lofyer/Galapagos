@@ -4,10 +4,10 @@
  @font-face {
   font-family: 'Open Sans';
   src: url('../fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;  
-  font-stretch: 75% 125%; 
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
   font-style: normal;
-  font-display: swap; 
+  font-display: swap;
 }
 
 @font-face {
@@ -20,7 +20,8 @@
 }
 
 :root {
-  --color-dark-blue: #0072f5; 
+  --color-light-blue: #cae6ff;
+  --color-dark-blue: #0072f5;
   --color-widget-button: var(--color-dark-blue);
   --color-widget-button-active: #003473;
   --color-widget-button-text: #ffffff;
@@ -30,7 +31,7 @@
   --color-widget-accessories: var(--color-dark-blue);
   --color-widget-accessories-neutral: #afafaf;
 
-  --color-widget-background: #cae6ff;
+  --color-widget-background: var(--color-light-blue);
 
   --color-widget-plot-background: #eeeeee;
   --color-widget-plot-border: #bcbcbc;
@@ -40,7 +41,15 @@
 
   --color-widget-switch-primary: var(--color-dark-blue);
   --color-widget-switch-off: #d5d5d5;
-  
+
+  --color-widget-switch-primary-hover: #00aaff;
+  --color-widget-switch-off-hover:     #e5e5e5;
+
+  --color-tab-background:        #eff5fc;
+  --color-tab-hover:             var(--color-light-blue);
+  --color-tab-active-background: var(--color-light-blue);
+  --color-tab-active-hover:      #98cbf8;
+  --color-tab-border:            #999999;
 
   --widget-padding-x: 0.5rem;
   --widget-padding-y: 0.3rem;
@@ -65,7 +74,7 @@
   background-color: var(--color-widget-background);
 }
 .netlogo-output {
-  background-color: #eeeeee;
+  background-color: #d7d7d7;
 }
 
 .netlogo-slider-label .netlogo-label {
@@ -77,29 +86,29 @@
 }
 
 .netlogo-tab-area {
-  border-color: #242479;
+  border-color: var(--color-tab-border);
 }
 
 .netlogo-tab {
-  background-color: #BCBCE5;
-  border-color: #242479;
+  background-color: var(--color-tab-background);
+  border-color: var(--color-tab-border);
   font-size: 16px;
 }
 
 .netlogo-tab.netlogo-active {
-  background-color: #7C76fD;
+  background-color: var(--color-tab-active-background);
 }
 
 .netlogo-tab:active {
-  background-color: #7C76fD;
+  background-color: var(--color-tab-active-background);
 }
 
 .netlogo-tab:hover  {
-  background-color: #D3D3EE;
+  background-color: var(--color-tab-hover);
 }
 
 .netlogo-tab.netlogo-active:hover  {
-  background-color: #9E99FD;
+  background-color: var(--color-tab-active-hover);
 }
 
 .netlogo-view-container {
@@ -108,15 +117,6 @@
 
 .netlogo-canvas {
   border-radius: 3px;
-}
-
-/* Utilities */
-.spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
 }
 
 /* Color input */
@@ -139,7 +139,7 @@
   background-color: #ccc;
 }
 
-.netlogo-color-input > * { 
+.netlogo-color-input > * {
   box-sizing: border-box;
 }
 
@@ -151,7 +151,7 @@
   aspect-ratio: 1 / 1;
 
   gap: 0;
-  
+
   background-image: var(--checkerboard);
   background-position-x: left;
   background-position-y: center;

@@ -7,6 +7,9 @@ import { setUpWidget, setUpButton, setUpChooser, setUpInputBox
 import { VIEW_INNER_SPACING } from "./ractives/view.js"
 import { locationProperties, typedWidgetProperties } from "./widget-properties.js"
 
+import { prepareColorPickerForInline } from "./ractives/subcomponent/color-picker.js"
+import CodeUtils from "./code-utils.js"
+
 PenBundle = tortoise_require('engine/plot/pen')
 
 class WidgetController
@@ -126,6 +129,15 @@ class WidgetController
   # () => Array[Widget]
   widgets: ->
     v for _, v of @ractive.get('widgetObj')
+
+  # () => void
+  onBeforeExportHTMLFetch: ->
+    await prepareColorPickerForInline()
+
+  # (Document) => void
+  onBeforeExportHTMLDocument: (document) ->
+    CodeUtils.dataTagStore.copyAllToDocument(document)
+    return
 
   # ("runtime" | "compiler", String, Exception | Array[String])
   reportError: (time, source, details, ...args) =>
@@ -414,10 +426,15 @@ updateWidget = (widget, isHNWClient) ->
         try
           value = widget.reporter()
           isNum = (typeof(value) is "number")
+          isString = (typeof(value) is "string") \
+                      and (value.trim() isnt "") \
+                      and (parseFloat(value).toString() isnt value)
           isntValidValue = not (value? and (not isNum or isFinite(value)))
           if isntValidValue
             'N/A'
-          else
+          else if isString
+            value
+          else if isNum
             preci = widget.precision
             if preci?
               if not isHNWClient
@@ -430,6 +447,9 @@ updateWidget = (widget, isHNWClient) ->
                   withPrecision(parsed, preci)
             else
               value
+          else
+            workspace.dump(value, false)
+
         catch err
           'N/A'
       else
@@ -487,7 +507,7 @@ defaultWidgetMixinFor = (widgetType, x, y, countByType) ->
     when "chooser" , "hnwChooser"  then { height:  60, width: 250, choices: [], currentChoice: -1, variable: "" }
     when "monitor" , "hnwMonitor"  then { height:  60, width: 100, fontSize: 11, precision: 17 }
     when "plot"    , "hnwPlot"     then { height: 175, width: 230, autoPlotX: true, autoPlotY: true, display: "Plot #{countByType(widgetType) + 1}", legendOn: false, pens: [], setupCode: "", updateCode: "", xAxis: "", xmax: 10, xmin: 0, yAxis: "", ymax: 10, ymin: 0, exists: false }
-    when "textBox" , "hnwTextBox"  then { height:  60, width: 180, color: 0, display: "", fontSize: 12, transparent: true }
+    when "textBox" , "hnwTextBox"  then { height:  60, width: 180, backgroundLight: 0, textColorLight: -16777216, display: "", fontSize: 12, markdown: false }
     else throw new Error("Huh?  What kind of widget is a #{widgetType}?")
 # coffeelint: enable=max_line_length
 

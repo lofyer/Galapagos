@@ -410,12 +410,22 @@
 .netlogo-speed-slider {
   background-color: transparent;
   border: none;
-  display: flex;
-  flex-direction: column;
   padding: 0.4rem;
   margin: 0 auto;
   width: 75%;
 }
+
+.netlogo-speed-slider-layout {
+  display: flex;
+  flex-direction: column;
+  width: min-content;
+}
+
+.netlogo-speed-slider input {
+  border: none;
+  width: 100%;
+}
+
 .model-speed-input {
   display: flex;
   gap: 0.5rem;
@@ -423,11 +433,13 @@
   align-items: center;
   margin: 0.1rem;
 }
+
 .netlogo-slider-bar.model-speed-slider-interface {
   height: 2px;
-  width: clamp(100px, 50%, 300px);
+  min-width: 200px;
   margin-top: unset;
 }
+
 .netlogo-slider-bar.model-speed-slider-interface > .netlogo-slider-bar-handle {
   background-color: var(--color-widget-accessories);
   top: calc(-1 * (var(--circle-radius))); /* 1px is to account for the border width */
@@ -437,7 +449,9 @@
   background-color: white;
   border: 1px solid #afafaf;
   border-radius: 4px;
-  padding: .15lh .5lh;
+  padding: .15lh .35lh;
+  font-size: 14px;
+  font-family: monospace;
   cursor: pointer;
 }
 
@@ -451,11 +465,6 @@
 
 .netlogo-widget input[type=range]::-ms-tooltip {
   display: none;
-}
-
-.netlogo-speed-slider input {
-  border: none;
-  width: 100%;
 }
 
 .netlogo-model input[type=range] {
@@ -571,6 +580,7 @@ June 2025 */
   display: flex;
   align-items: center;
   padding: var(--widget-padding-y) var(--widget-padding-x);
+  cursor: pointer;
 }
 
 .netlogo-switcher > .netlogo-label {
@@ -586,8 +596,7 @@ June 2025 */
   width: var(--knob-size);
   min-width: var(--knob-size);
 
-  position:relative;
-  cursor: pointer;
+  position: relative;
 }
 
 input[type=checkbox]:checked ~ .netlogo-switcher-element {
@@ -596,6 +605,14 @@ input[type=checkbox]:checked ~ .netlogo-switcher-element {
 
 input[type=checkbox]:not(checked) ~ .netlogo-switcher-element {
   background-color: var(--color-widget-switch-off);
+}
+
+.netlogo-switcher:hover > input[type=checkbox]:checked ~ .netlogo-switcher-element {
+  background-color: var(--color-widget-switch-primary-hover);
+}
+
+.netlogo-switcher:hover > input[type=checkbox]:not(checked) ~ .netlogo-switcher-element {
+  background-color: var(--color-widget-switch-off-hover);
 }
 
 .netlogo-switcher-element > .netlogo-switcher-element-knob {
@@ -623,6 +640,9 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   margin-top: 2px;
   padding: var(--widget-padding-y) var(--widget-padding-x);
   background-color: var(--color-widget-background);
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
 }
 
 .netlogo-slider:hover {
@@ -704,6 +724,7 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  user-select: none;
 }
 
 .netlogo-slider-label {
@@ -749,6 +770,10 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   border-radius: 6px;
   flex-shrink: 0;
   flex-grow: 1;
+
+  max-width: calc(100% - 2 * var(--widget-padding-x));
+  text-overflow: ellipsis;
+  overflow-x: auto;
 }
 
 .netlogo-value {
@@ -776,9 +801,14 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   width:     auto; /* This is a hack to get input type="number" widgets sized correctly in Firefox -Jeremy B. Jan 2018 */
   margin:    4px;
   resize:    none;
-  border:    1px solid var(--color-widget-input-border);
-  border-radius: 4px;
+  border:    1.5px solid var(--color-widget-input-border);
+  box-shadow:     0 1px 3px rgba(0,0,0,0.12);
+  border-radius:  4px;
   padding-inline: 0.2rem;
+}
+
+.netlogo-multiline-input[data-type=number] {
+  color: #a42f00;
 }
 
 .netlogo-input-box > .netlogo-label {
@@ -829,6 +859,12 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   flex-flow: column;
   flex-grow: 0;
   white-space: nowrap;
+}
+
+.netlogo-powered-by-image {
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
 }
 
 .netlogo-export-wrapper {
