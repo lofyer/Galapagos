@@ -35,7 +35,7 @@ RactiveIntColorInput = Ractive.extend({
   }
 
   on: {
-    click: (event) ->
+    'swatch-clicked': (event) ->
       if @get('isEnabled')
         event.original.stopPropagation()
         event.original.preventDefault()
@@ -43,7 +43,7 @@ RactiveIntColorInput = Ractive.extend({
         @set('isModalOpen', true)
       return false
 
-    "color-picked": (data) ->
+    '*.pick': (data) ->
       alpha = 255
       if @get('useAlpha') and typeof data.alpha is 'number'
         alpha = data.alpha
@@ -54,8 +54,8 @@ RactiveIntColorInput = Ractive.extend({
 
       @set('isModalOpen', false)
       return
-    
-    "color-picker-cancel": (event) ->
+
+    "*.cancel": (event) ->
       @set('isModalOpen', false)
       return false
   }
@@ -68,7 +68,7 @@ RactiveIntColorInput = Ractive.extend({
         rgbaArrayToHex(rgba.slice(0, 3))
       else
         "#000000"
-    
+
     alpha: ->
       argbInt = @get('value')
       if typeof argbInt is 'number' and @get('useAlpha')
@@ -101,7 +101,7 @@ RactiveIntColorInput = Ractive.extend({
 
   template:
     """
-    <div class="{{classNames}}" on-click="['click']" data-value="{{value}}">
+    <div class="{{classNames}}" on-click="swatch-clicked" data-value="{{value}}">
       <div class="netlogo-swatches">
         <div class="netlogo-swatch" style="background-color: {{hexColor}};"></div>
         {{#useAlpha}}
@@ -110,13 +110,12 @@ RactiveIntColorInput = Ractive.extend({
       </div>
     </div>
     {{#isModalOpen}}
-    <colorPicker id="{{id}}-color-picker"
-                 on-pick="['color-picked']"
-                 on-cancel="['color-picker-cancel']"
-                 pickerType="{{pickerType}}"
-                 initialColor="{{initialColor}}"
-                 defaultPicker="advanced"
-                  />
+    <colorPicker
+      id="{{id}}-color-picker"
+      pickerType="{{pickerType}}"
+      initialColor="{{initialColor}}"
+      defaultPicker="advanced"
+      />
     {{/}}
     """
 })

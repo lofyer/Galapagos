@@ -9,7 +9,7 @@ import RactiveEditFormSpacer from "./subcomponent/spacer.js"
 import RactiveEditFormFontSize from "./subcomponent/font-size.js"
 import { RactiveEditFormLabeledInput } from "./subcomponent/labeled-input.js"
 
-LabelEditForm = EditForm.extend({
+NoteEditForm = EditForm.extend({
 
   data: -> {
     backgroundLight:  undefined # Int
@@ -75,7 +75,7 @@ LabelEditForm = EditForm.extend({
           <label for="{{id}}-text-color" class="widget-edit-input-label">Text color</label>
           <colorInput
             id="{{id}}-text-color" name="color" class="widget-edit-text widget-edit-input widget-edit-color-pick"
-            value="{{_textColorLight}}" useAlpha="false" />
+            value="{{_textColorLight}}" useAlpha="true" />
         </div>
         <div class="flex-row" style="align-items: center; width: 100%; justify-content: space-between;">
           <label for="{{id}}-background-color" class="widget-edit-input-label">Background color</label>
@@ -96,9 +96,9 @@ LabelEditForm = EditForm.extend({
 
 })
 
-HNWLabelEditForm = LabelEditForm
+HNWNoteEditForm = NoteEditForm
 
-RactiveLabel = RactiveWidget.extend({
+RactiveNote = RactiveWidget.extend({
 
   data: -> {
     contextMenuOptions: [@standardOptions(this).edit, @standardOptions(this).delete]
@@ -123,7 +123,7 @@ RactiveLabel = RactiveWidget.extend({
     return
 
   components: {
-    editForm: LabelEditForm
+    editForm: NoteEditForm
   }
 
   eventTriggers: ->
@@ -187,10 +187,10 @@ RactiveLabel = RactiveWidget.extend({
 
 })
 
-RactiveHNWLabel = RactiveLabel.extend({
+RactiveHNWNote = RactiveNote.extend({
   components: {
-    editForm: HNWLabelEditForm
+    editForm: HNWNoteEditForm
   }
 })
 
-export { RactiveLabel, RactiveHNWLabel }
+export { RactiveNote, RactiveHNWNote }

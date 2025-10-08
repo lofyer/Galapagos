@@ -5,8 +5,11 @@ import {
   rgbaArrayToHex,
   netlogoColorToRGB,
 } from "/colors.js"
+import CodeUtils from "../../code-utils.js"
 
 COLOR_PICKER_URL = "../assets/pages/color-picker/index.html"
+COLOR_PICKER_INLINED_URL = "../assets/pages/color-picker/inlined/index.html"
+COLOR_PICKER_INLINED_DATA_NAME = "colorPickerIframe"
 RactiveColorPicker = Ractive.extend({
   data: {
     id: "color-picker-modal"  # String
@@ -28,7 +31,7 @@ RactiveColorPicker = Ractive.extend({
   innerBabyMonitor: undefined, # Port1 of MessageChannel
 
   on: {
-    init: ->
+    'init': ->
       @messageChannel = new MessageChannel
       @innerBabyMonitor = @messageChannel.port1
       @innerBabyMonitor.onmessage = @onColorPickerEvent.bind(this)
@@ -37,7 +40,11 @@ RactiveColorPicker = Ractive.extend({
         console.warn("RactiveColorPicker: Unknown pickerType '#{@get('pickerType')}', defaulting to 'num'")
         @set('pickerType', 'num')
 
-    iframeLoaded: (event) ->
+      htmlString = CodeUtils.dataTagStore.retrieve(COLOR_PICKER_INLINED_DATA_NAME)
+      if htmlString
+        @set('srcDoc', htmlString)
+
+    'iframe-loaded': (event) ->
         iframe = event.node
 
         iframe.contentWindow.postMessage({
@@ -113,16 +120,29 @@ RactiveColorPicker = Ractive.extend({
 
     throw new Error("Invalid color format")
 
-
   template: """
   <modal id="{{modalId}}" title="Color Picker">
     <asyncLoader loading="{{!iframeLoaded}}">
         <iframe id="{{id}}" style="width: 100%; height: 100%;"
-                src="{{url}}" frameborder="0" on-load="iframeLoaded">
+                {{#if !srcDoc}} src="{{url}}" {{/if}}
+                {{#if srcDoc}} srcDoc="{{srcDoc}}" {{/if}}
+                frameborder="0" on-load="iframe-loaded">
         </iframe>
     </asyncLoader>
   </modal>
   """
 })
 
+prepareColorPickerForInline = () ->
+  try
+    response = await fetch(COLOR_PICKER_INLINED_URL)
+    htmlString = await response.text()
+    CodeUtils.dataTagStore.upsert(COLOR_PICKER_INLINED_DATA_NAME, htmlString)
+  catch e
+    throw new Error("Failed to prepare RactiveColorPicker for inlining: #{e}")
+
+
 export default RactiveColorPicker
+export {
+  prepareColorPickerForInline
+}

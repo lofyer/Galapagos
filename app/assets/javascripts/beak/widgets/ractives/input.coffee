@@ -216,7 +216,16 @@ RactiveInput = RactiveValueWidget.extend({
     inputType = @get("widget.boxedValue.type")
     valueType = typeof(newValue)
 
-    if ([ "Color", "Number" ].includes(inputType) and valueType isnt "number")
+    if (inputType is "Number" and valueType isnt "number")
+      try
+        newValue = workspace.evalPrims.readFromString(newValue)
+        if newValue? and typeof(newValue) is "number"
+          @set("widget.currentValue", newValue)
+      catch
+        @resetValue("number", oldValue, 0)
+        return
+
+    if (inputType is "Color" and valueType isnt "number")
       @resetValue("number", oldValue, 0)
       return
 
@@ -250,8 +259,8 @@ RactiveInput = RactiveValueWidget.extend({
         {{# widget.boxedValue.type === 'Number'}}
           <input
             class="netlogo-multiline-input"
-            type="number"
             value="{{internalValue}}"
+            data-type="number"
             lazy="true"
             on-change="['widget-value-change', widget.boxedValue.type]"
             {{# isEditing }}disabled{{/}}
