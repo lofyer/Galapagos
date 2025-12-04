@@ -10,6 +10,8 @@ import initializeUI             from "./widgets/initialize-ui.js"
 import { runWithErrorHandling } from "./widgets/set-up-widgets.js"
 import { cloneWidget }          from "./widgets/widget-properties.js"
 import { serializeResources }   from "./external-resources.js"
+import attributions             from "../attributions/index.js"
+
 
 MAX_UPDATE_DELAY     = 1000
 FAST_UPDATE_EXP      = 0.5
@@ -20,7 +22,7 @@ DEFAULT_REDRAW_DELAY = 1000 / 30
 MAX_REDRAW_DELAY     = 1000
 REDRAW_EXP           = 2
 
-NETLOGO_VERSION      = '2.12.3'
+NETLOGO_VERSION      = '2.12.6'
 
 # performance.now gives submillisecond timing, which improves the event loop
 # for models with submillisecond go procedures. Unfortunately, iOS Safari
@@ -365,6 +367,10 @@ class SessionLite
 
         await @widgetController.onBeforeExportHTMLDocument(dom)
 
+        for _, value of attributions
+          attributionComment = dom.createComment(value)
+          dom.documentElement.prepend(attributionComment)
+
         nlogo = @getNlogo()
         if nlogo.success
           nlogoScript = dom.querySelector('#nlogo-code')
@@ -372,7 +378,7 @@ class SessionLite
           nlogoScript.dataset.filename = exportName.replace(/\.html$/, '.nlogox')
           wrapper = document.createElement('div')
           wrapper.appendChild(dom.documentElement)
-          exportBlob = new Blob([wrapper.innerHTML], {type: 'text/html:charset=utf-8'})
+          exportBlob = new Blob(["<!DOCTYPE html>\n\n" + wrapper.innerHTML], {type: 'text/html:charset=utf-8'})
           saveAs(exportBlob, exportName)
           @widgetController.ractive.fire('html-exported', exportName, nlogo.result)
 
@@ -494,7 +500,7 @@ class SessionLite
 
     { result, success } = commandResult
     if not success
-      @widgetController.reportError('compiler', source, result)
+      @widgetController.reportError('compiler', source, 'console', code, result)
       return
 
     command = new Function(result)

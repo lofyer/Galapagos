@@ -146,19 +146,41 @@ HNWChooserEditForm = ChooserEditForm.extend({
 
 })
 
+{ eq } = tortoise_require('brazier/equals')
+
 RactiveChooser = RactiveValueWidget.extend({
 
   data: -> {
     contextMenuOptions: [@standardOptions(this).edit, @standardOptions(this).delete]
+    internalChoice:     0
   }
 
   widgetType: "chooser"
 
+  on: {
+    'init': () ->
+      widget = @get('widget')
+      @set('internalChoice', widget.currentChoice)
+      @set('internalValue',  widget.choices[widget.currentChoice])
+      return
+
+    'chooser-option-change': () ->
+      widget        = @get('widget')
+      currentChoice = @get('internalChoice')
+      currentValue  = widget.choices[currentChoice]
+      @set('internalValue', currentValue)
+      @set('widget.currentChoice', currentChoice)
+      @fire('widget-value-change')
+      return
+  }
+
   observe: {
     'widget.currentValue': () ->
       widget        = @get('widget')
-      currentChoice = widget.choices.findIndex( (c) -> c is widget.currentValue )
-      @set('widget.currentChoice', if currentChoice >= 0 then currentChoice else 0)
+      currentChoice = widget.choices.findIndex(eq(widget.currentValue))
+      if currentChoice is @get('internalChoice')
+        return
+      @set('internalChoice', currentChoice)
       return
   }
 
@@ -182,12 +204,13 @@ RactiveChooser = RactiveValueWidget.extend({
     <label id="{{id}}" class="netlogo-widget netlogo-chooser netlogo-input {{#widget.oldSize}}old-size{{/}} {{classes}}" style="{{dims}}">
       <span class="netlogo-label">{{widget.display}}</span>
       <select
+        name="chooser"
         class="netlogo-chooser-select"
-        value="{{internalValue}}"
-        on-change="widget-value-change"
+        value="{{internalChoice}}"
+        on-change="chooser-option-change"
         {{# isEditing }} disabled{{/}} >
-        {{#widget.choices}}
-        <option class="netlogo-chooser-option" value="{{.}}">{{>literal}}</option>
+        {{#widget.choices:index}}
+        <option class="netlogo-chooser-option" value="{{index}}">{{>literal}}</option>
         {{/}}
       </select>
     </label>

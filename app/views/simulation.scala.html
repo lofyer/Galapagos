@@ -1,4 +1,6 @@
-@(tagBuilder: TagBuilder, isStandalone: Boolean = false)(implicit request: Request[?], environment: play.api.Environment)
+@import play.api.Mode
+
+@(tagBuilder: TagBuilder, isStandalone: Boolean = false)(implicit mode: Mode, request: Request[?], environment: play.api.Environment)
 
 <html>
   <head>
@@ -8,6 +10,7 @@
     @tagBuilder.pathToHTML("codemirror/addon/dialog/dialog.css")
     @tagBuilder.pathToHTML("codemirror/addon/hint/show-hint.css")
     @tagBuilder.pathToHTML("chosen-js/chosen.css")
+    @tagBuilder.pathToHTML("stylesheets/netlogo-fonts.css")
     @tagBuilder.pathToHTML("stylesheets/classes.css")
     @tagBuilder.pathToHTML("stylesheets/widgets.css")
     @tagBuilder.pathToHTML("stylesheets/info.css")
@@ -17,6 +20,7 @@
     @tagBuilder.pathToHTML("stylesheets/spinner.css")
     @tagBuilder.pathToHTML("stylesheets/alert.css")
     @tagBuilder.pathToHTML("stylesheets/js-error.css")
+    @views.html.analytics(isStandalone)
   </head>
   <body style="margin: 0px;">
     @views.html.spinner()

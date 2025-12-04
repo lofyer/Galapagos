@@ -72,6 +72,28 @@ class WidgetController
     return
 
   # () => Unit
+  pauseForevers: () ->
+    if not @runningIndices? or @runningIndices.length is 0
+      widgets = @ractive.get('widgetObj')
+
+      @runningIndices = Object.getOwnPropertyNames(widgets)
+        .filter( (index) ->
+          widget = widgets[index]
+          widget.type is "button" and widget.forever and widget.running
+        )
+      @runningIndices.forEach( (index) -> widgets[index].running = false )
+    return
+
+  # () => Unit
+  rerunForevers: () =>
+    if @runningIndices? and @runningIndices.length > 0
+      widgets = @ractive.get('widgetObj')
+
+      @runningIndices.forEach( (index) -> widgets[index].running = true )
+    @runningIndices = []
+    return
+
+  # () => Unit
   updateWidgets: ->
 
     isHNWClient = @ractive.get('isHNW') and not @ractive.get('isHNWHost')
@@ -141,9 +163,10 @@ class WidgetController
 
   # ("runtime" | "compiler", String, Exception | Array[String])
   reportError: (time, source, details, ...args) =>
-    if not ['runtime', 'compiler'].includes(time)
-      throw new Error('Only valid values for `time` are "runtime" or "compiler"')
-    @ractive.fire("#{time}-error", {}, source, details, ...args)
+    switch time
+      when "compiler" then @ractive.fire("compiler-error", {}, source, "", "", details, ...args)
+      when "runtime"  then @ractive.fire( "runtime-error", {}, source        , details, ...args)
+      else                 throw new Error('Only valid values for `time` are "runtime" or "compiler"')
 
   # (Array[Widget], Array[Widget]) => Unit
   freshenUpWidgets: (realWidgets, newWidgets) ->
@@ -218,11 +241,11 @@ class WidgetController
   speed: ->
     @ractive.get('speed')
 
-  # (String) => Unit
-  setCode: (code) =>
+  # (String, Boolean) => Unit
+  setCode: (code, recompile = true) =>
     @ractive.set('code', code)
     @ractive.findComponent('codePane')?.setCode(code)
-    @ractive.fire('recompile', 'system')
+    if recompile then @ractive.fire('recompile', 'system')
     return
 
   # (String) => Unit

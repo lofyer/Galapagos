@@ -106,28 +106,6 @@
   -moz-user-select: none;
 }
 
-.growing {
-  animation-name: grow;
-  animation-duration: 0.4s;
-  animation-timing-function: ease-out;
-}
-
-.shrinking {
-  animation-name: grow;
-  animation-direction: reverse;
-  animation-duration: 0.4s;
-  animation-timing-function: ease-in;
-}
-
-@keyframes grow {
-  0% {
-    max-height: 0;
-  }
-  100% {
-    max-height: 100%;
-  }
-}
-
 .netlogo-model-container {
   width: min-content;
   position: relative;
@@ -490,6 +468,8 @@
   color:   black;
   display: flex;
   justify-content: space-around;
+  font-family: var(--font-widget);
+  font-size: 12px;
   align-items: center;
   padding: 0px;
 }
@@ -557,7 +537,30 @@
   color: #808080;
 }
 
-.netlogo-text-box {
+.netlogo-button.netlogo-disabled:active,
+.netlogo-forever-button.netlogo-disabled.netlogo-active {
+  background-color: var(--color-widget-button-disabled);
+  color: var(--color-widget-button-disabled-text);
+}
+
+.netlogo-command {
+  background-color: var(--color-widget-button);
+  color: var(--color-widget-button-text);
+}
+.netlogo-command.netlogo-active,
+.netlogo-command:active {
+  background-color: var(--color-widget-button-active);
+}
+
+.netlogo-input {
+  background-color: var(--color-widget-background);
+}
+
+.netlogo-output {
+  background-color: #e8e8e8;
+}
+
+.netlogo-note {
   background-color: white;
   border: none;
   margin: 0;
@@ -568,11 +571,11 @@
 
 /* These are for the new Markdown display capabilities, values chosen to appear somewhat similar to desktop. -Jeremy B
 June 2025 */
-.netlogo-text-box > h1, h2, h3, h4, h5, h6, div, p, ul {
+.netlogo-note > h1, h2, h3, h4, h5, h6, div, p, ul {
   margin: 0;
 }
 
-.netlogo-text-box > ul {
+.netlogo-note > ul {
   padding-inline-start: 1.5em;
 }
 
@@ -659,7 +662,6 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   width: 100%;
 }
 
-
 .netlogo-slider-bar {
   position: relative;
 
@@ -716,9 +718,6 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   transform: translateX(-50%);
 }
 
-
-
-
 .netlogo-label {
   margin: 0 auto;
   overflow: hidden;
@@ -736,19 +735,28 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 .netlogo-slider-label .netlogo-label {
   flex: 1 1 auto;
   min-width: 0;
+  background-color: transparent;
 }
 
 .netlogo-slider-label .netlogo-slider-value {
   flex: 0 0 auto;
 }
 
+.netlogo-slider-value-input {
+  font-family: var(--font-widget);
+  font-size:   14px;
+}
+
 .netlogo-slider-label input[type=number] {
   margin: 0px;
-
   border: 1px solid var(--color-widget-input-border);
   border-radius: 6px;
   text-align: right;
   padding: 2px;
+}
+
+.netlogo-slider-label .netlogo-slider-value input {
+  background-color: white;
 }
 
 .netlogo-monitor {
@@ -771,13 +779,9 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   flex-shrink: 0;
   flex-grow: 1;
 
-  max-width: calc(100% - 2 * var(--widget-padding-x));
+  max-width: calc(100% - 1 * var(--widget-padding-x));
   text-overflow: ellipsis;
-  overflow-x: auto;
-}
-
-.netlogo-value {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .netlogo-code {
@@ -805,10 +809,14 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   box-shadow:     0 1px 3px rgba(0,0,0,0.12);
   border-radius:  4px;
   padding-inline: 0.2rem;
+  font-family: var(--font-widget);
+  font-size:   12px;
 }
 
 .netlogo-multiline-input[data-type=number] {
   color: #a42f00;
+  font-family: monospace;
+  font-size:   14px;
 }
 
 .netlogo-input-box > .netlogo-label {
@@ -836,6 +844,9 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   border: 1px solid var(--color-widget-select-border);
   border-radius: 4px;
   padding: 0.1rem 0.2rem;
+  font-family: var(--font-widget);
+  font-size: 12px;
+  background-color: #ffffff;
 }
 
 .netlogo-plot {
@@ -843,6 +854,10 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   overflow: visible; /* must come after the .netlogo-widget declaration - JMB November 2017 */
   padding: 0;
   border: 1px solid #eeeeee;
+}
+
+.highcharts-root {
+  font-family: var(--font-widget) !important;
 }
 
 .highcharts-container {
@@ -881,14 +896,6 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   justify-content: center;
   margin: 5px 0 -5px 0;
   font-weight: bold;
-}
-
-.netlogo-widget-error {
-  color: red;
-}
-
-.netlogo-widget-error:hover {
-  cursor: pointer;
 }
 
 .CodeMirror {
@@ -1108,9 +1115,74 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .netlogo-chooser.old-size > .netlogo-chooser-select {
   padding: 2px 4px;
-  font-size: 12px;
 }
 
 .netlogo-switcher.old-size {
   padding: 2px 4px;
+}
+
+.netlogo-widget-error {
+  color: red;
+}
+.netlogo-widget-error.netlogo-button {
+  color: white;
+  background: red;
+}
+
+.netlogo-widget-error:hover {
+  cursor: pointer !important;
+}
+
+.netlogo-view-container {
+  background-color: #f4f4f4;
+}
+
+.netlogo-canvas {
+  border-radius: 3px;
+}
+
+/* Color input */
+.netlogo-color-input {
+  padding: 0.2rem;
+  margin: 0.1rem;
+  box-sizing: border-box;
+
+  aspect-ratio: 1 / 1;
+  width: 2rem;
+
+  border-radius: 0.2rem;
+
+  background-color: #eee;
+  height: 100%;
+}
+
+.netlogo-color-input:hover {
+  cursor: pointer;
+  background-color: #ccc;
+}
+
+.netlogo-color-input > * {
+  box-sizing: border-box;
+}
+
+.netlogo-swatches {
+  display: grid;
+  grid-template-columns: auto auto;
+
+  width: 100%;
+  aspect-ratio: 1 / 1;
+
+  gap: 0;
+
+  background-image: var(--checkerboard);
+  background-position-x: left;
+  background-position-y: center;
+  inset: 0;
+
+  border-radius: 0.1rem;
+  overflow: hidden;
+}
+
+.no-alpha .netlogo-swatches {
+  grid-template-columns: auto;
 }
