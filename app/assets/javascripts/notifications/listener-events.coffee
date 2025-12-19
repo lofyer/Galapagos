@@ -50,6 +50,14 @@ listenerEvents = Object.freeze([
     ]
   },
   {
+    'name': 'model-load-failed',
+    'args': [
+      'source',   # 'url' | 'disk' | 'new' | 'script-element'
+      'location', # String
+      'errors',   # Array[String | Exception]
+    ]
+  },
+  {
     'name': 'compile-start',
     'args': [
       'nlogo',        # String, possibly rewritten nlogo code for the compile
@@ -59,13 +67,15 @@ listenerEvents = Object.freeze([
   {
     'name': 'compile-complete',
     'args': [
-      'nlogo',         # String, possibly rewritten nlogo code for the compile
-      'originalNlogo', # String, original nlogo code from the model load
-      'status',        # Boolean
+      'nlogo',           # String, possibly rewritten nlogo code for the compile
+      'originalNlogo',   # String, original nlogo code from the model load
+      'modelSourceType', # 'url' | 'disk' | 'new' | 'script-element'
+      'status',          # 'success' | 'failure'
       {
         sourceArg: 'status'
         cases: [
-          { sourceArgValues: ['failure'], argToAdd: 'failure-level' }
+          { sourceArgValues: ['failure'], argToAdd: 'failureLevel' } # 'compile-recoverable' | 'compile-fatal'
+        , { sourceArgValues: ['failure'], argToAdd: 'errors' }       # Array[String | Exception]
         ]
       }
     ]
@@ -257,11 +267,9 @@ listenerEvents = Object.freeze([
   {
     'name': 'compiler-error',
     'args': [
-      'source',          # 'recompile' | 'recompile-procedures' | 'export-nlogo' | 'export-html' | 'button' | 'chooser'
-                         # | 'slider' | 'plot' | 'input' | 'switch' | 'console'
-      'modelSourceType', # 'url' | 'disk' | 'new' | 'script-element'
-      'modelCode',       # String
-      'errors'           # Array[Exception]
+      'source', # 'recompile' | 'recompile-procedures' | 'export-nlogo' | 'export-html' | 'button' | 'chooser'
+                # | 'slider' | 'plot' | 'input' | 'switch' | 'console'
+      'errors'  # Array[Exception]
     ]
   },
   {
@@ -284,25 +292,24 @@ listenerEvents = Object.freeze([
   }
 ])
 
-getArgName = (argSetting, args) ->
+getArgNames = (argSetting, namedArgs) ->
   if (typeof argSetting) is 'string'
-    argSetting
+    [argSetting]
   else
-    dependentValue = args[argSetting.sourceArg]
-    maybeCase = argSetting.cases.find( (argCase) ->
+    dependentValue = namedArgs[argSetting.sourceArg]
+    cases = argSetting.cases.filter( (argCase) ->
       argCase.sourceArgValues.includes(dependentValue)
     )
-    maybeCase?.argToAdd
+    cases.map( (c) => c.argToAdd )
 
 # (Array[String | DependentArg], Array[Any]) => EventTypeArgs
 createNamedArgs = (argSettings, argValues) ->
   namedArgs = {}
-  if (argSettings.length < argValues.length)
-    throw new Error("not enough arg settings for the values given")
   argSettings.forEach( (argSetting, i) ->
-    argName = getArgName(argSetting, namedArgs)
-    if argName?
-      namedArgs[argName] = argValues[i]
+    argNames = getArgNames(argSetting, namedArgs)
+    argNames.forEach( (argName, j) ->
+      namedArgs[argName] = argValues[i + j]
+    )
   )
   namedArgs
 

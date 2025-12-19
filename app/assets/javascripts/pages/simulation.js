@@ -15,6 +15,7 @@ import Tortoise from "/beak/tortoise.js";
 
 try {
 
+  var loadingState    = 'in-progress'; // 'in-progress' | 'session-open' | 'fatal-error' | 'fatal-error-displayed'
   var loadingOverlay  = document.getElementById('loading-overlay');
   var activeContainer = loadingOverlay;
   var modelContainer  = document.querySelector('#netlogo-model-container');
@@ -105,16 +106,30 @@ try {
   listeners.push(alerter);
 
   function handleCompileResult(result) {
-    if (result.type === 'success') {
-      openSession(result.session);
-    } else {
-      if (result.source === 'compile-recoverable') {
+    switch (result.type) {
+      case 'success':
         openSession(result.session);
-      } else {
-        activeContainer = alertDialog;
-        loadingOverlay.style.display = 'none';
-      }
-      notifyListeners('compiler-error', result.source, result.modelSourceType, result.modelCode, result.errors);
+        loadingState = 'session-open';
+        break;
+
+      case 'model-load-failed':
+        notifyListeners('model-load-failed', result.source, result.location, result.errors);
+        loadingState = 'fatal-error';
+        break;
+
+      default:
+        if (result.source === 'compile-recoverable') {
+          openSession(result.session);
+          loadingState = 'session-open';
+          // Just to note it here, this is for displaying recoverable compile-time errors to the user.  If a non-recoverable
+          // error occured that should be handled in the `compile-complete` event with a `status: failure`.  -Jeremy B
+          // December 2025
+          notifyListeners('compiler-error', result.source, result.errors);
+        } else {
+          loadingState = 'fatal-error';
+          activeContainer = document.getElementById('alert-dialog');
+          loadingOverlay.style.display = 'none';
+        }
     }
   }
 
@@ -365,25 +380,40 @@ try {
 
   if (isInFrame) {
     var width = '', height = '';
-    window.setInterval(function() {
-      if (
-        globalThis.session && (
-          activeContainer.offsetWidth  !== width ||
-          activeContainer.offsetHeight !== height ||
-          document.title != pageTitle(globalThis.session.modelTitle())
-        )
-      ) {
-        document.title = pageTitle(globalThis.session.modelTitle());
-        width  = activeContainer.offsetWidth;
-        height = activeContainer.offsetHeight;
-        parent.postMessage({
-          width,
-          height,
-          title:  document.title,
-          type:   'nlw-resize'
-        }, '*');
+    const adjustSizeAndTitle = () => {
+      switch (loadingState) {
+        case 'session-open':
+          const needsActiveUpdate = activeContainer.offsetWidth !== width ||
+            activeContainer.offsetHeight !== height ||
+            document.title != pageTitle(globalThis.session.modelTitle());
+          if (needsActiveUpdate) {
+            document.title = pageTitle(globalThis.session.modelTitle());
+            width  = activeContainer.offsetWidth;
+            height = activeContainer.offsetHeight;
+            parent.postMessage({
+              width,
+              height,
+              title:  document.title,
+              type:   'nlw-resize'
+            }, '*');
+          }
+          break;
+
+        case 'fatal-error':
+          loadingState = 'fatal-error-displayed'
+          const alertContainer = document.getElementById('alert-dialog');
+          height = alertContainer.clientHeight + 40;
+          width  = alertContainer.clientWidth  + 60;
+          parent.postMessage({
+            width,
+            height,
+            title: document.title,
+            type:  'nlw-resize'
+          }, '*');
+          break;
       }
-    }, 200);
+    };
+    window.setInterval(adjustSizeAndTitle, 200);
   }
 
 } catch (ex) {

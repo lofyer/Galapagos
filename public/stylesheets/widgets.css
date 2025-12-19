@@ -42,19 +42,30 @@
   overflow: hidden;
 }
 
-.netlogo-command,.netlogo-input {
-  user-select:      none;
+.netlogo-widget:focus-visible,
+.netlogo-slider-bar:focus-visible {
+  outline: var(--color-widget-select-border) solid 2px;
+}
+
+.netlogo-button:focus-visible,
+.netlogo-forever-button:focus-visible {
+  outline: var(--color-widget-select-border) solid 3px;
+}
+
+.netlogo-command,
+.netlogo-input {
+  user-select: none;
   -moz-user-select: none;
 }
 
 .netlogo-command:hover {
-  filter:     brightness(1.1);
-  cursor:     pointer;
+  filter: brightness(1.1);
+  cursor: pointer;
 }
 
 .netlogo-command.netlogo-disabled:hover {
   box-shadow: none;
-  cursor:     default;
+  cursor: default;
 }
 
 .netlogo-tab-area {
@@ -66,7 +77,7 @@
 
 .netlogo-tab {
   display: block;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDEiPjxwb2x5Z29uIHBvaW50cz0iMCwwIDIsMCAxLDEiIGZpbGw9InJnYig4Myw4Myw4MykiLz4gPC9zdmc+");
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDEiPjxwb2x5Z29uIHBvaW50cz0iMCwwIDIsMCAxLDEiIGZpbGw9InJnYig4Myw4Myw4MykiLz4gPC9zdmc+');
   background-position: 97% 50%;
   background-repeat: no-repeat;
   background-size: 20px 20px;
@@ -76,7 +87,7 @@
 }
 
 .netlogo-tab.netlogo-active {
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDEiPjxwb2x5Z29uIHBvaW50cz0iMCwxIDIsMSAxLDAiIGZpbGw9InJnYig4Myw4Myw4MykiLz4gPC9zdmc+");
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDEiPjxwb2x5Z29uIHBvaW50cz0iMCwxIDIsMSAxLDAiIGZpbGw9InJnYig4Myw4Myw4MykiLz4gPC9zdmc+');
 }
 
 .netlogo-tab:not(:last-child) {
@@ -84,7 +95,7 @@
   border-bottom-color: inherit;
 }
 
-.netlogo-tab input[type=checkbox] {
+.netlogo-tab input[type='checkbox'] {
   display: none;
 }
 
@@ -102,8 +113,30 @@
 }
 
 .unselectable {
-  user-select:      none;
+  user-select: none;
   -moz-user-select: none;
+}
+
+.growing {
+  animation-name: grow;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-out;
+}
+
+.shrinking {
+  animation-name: grow;
+  animation-direction: reverse;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in;
+}
+
+@keyframes grow {
+  0% {
+    max-height: 0;
+  }
+  100% {
+    max-height: 100%;
+  }
 }
 
 .netlogo-model-container {
@@ -144,7 +177,7 @@
   width: min-content;
   height: min-content;
   cursor: pointer;
-  color: #7F7F7F;
+  color: #7f7f7f;
   font-weight: bold;
   user-select: none;
 }
@@ -202,7 +235,7 @@
 }
 
 .netlogo-ugly-button {
-  color:      black;
+  color: black;
   text-align: center;
   background-color: rgb(240, 240, 240);
   border-color: rgb(238, 238, 238);
@@ -253,21 +286,21 @@
 }
 
 .netlogo-codeusage-popup {
-  position:absolute;
+  position: absolute;
   z-index: 10;
-  border:1px solid #B2B2B2;
+  border: 1px solid #b2b2b2;
   background: white;
-  box-shadow: 3px 3px 2px #E9E9E9;
-  border-radius:4px;
+  box-shadow: 3px 3px 2px #e9e9e9;
+  border-radius: 4px;
   max-height: 15em;
   overflow-y: auto;
 }
 
 .netlogo-codeusage-list {
-  list-style:none;
-  margin-top:1px;
+  list-style: none;
+  margin-top: 1px;
   padding: 1px;
-  font-size:90%;
+  font-size: 90%;
   font-family: monospace;
 }
 
@@ -277,8 +310,8 @@
 
 .netlogo-codeusage-item:hover {
   color: white;
-  background:#284570;
-  border-radius:2px;
+  background: #284570;
+  border-radius: 2px;
 }
 
 .netlogo-info-editor {
@@ -427,7 +460,7 @@
   background-color: white;
   border: 1px solid #afafaf;
   border-radius: 4px;
-  padding: .15lh .35lh;
+  padding: 0.15lh 0.35lh;
   font-size: 14px;
   font-family: monospace;
   cursor: pointer;
@@ -441,22 +474,22 @@
   background-color: #dfdfdf;
 }
 
-.netlogo-widget input[type=range]::-ms-tooltip {
+.netlogo-widget input[type='range']::-ms-tooltip {
   display: none;
 }
 
-.netlogo-model input[type=range] {
-    cursor: pointer;
-    cursor: grab;
+.netlogo-model input[type='range'] {
+  cursor: pointer;
+  cursor: grab;
 }
 
-.netlogo-model input[type=range]:active {
-    cursor: pointer;
-    cursor: grabbing;
+.netlogo-model input[type='range']:active {
+  cursor: pointer;
+  cursor: grabbing;
 }
 
 .netlogo-tick-counter {
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   font-size: 13px;
   margin: 3px;
   border: none;
@@ -464,12 +497,12 @@
 }
 
 .netlogo-button {
-  border:  inherit;
-  color:   black;
-  display: flex;
-  justify-content: space-around;
   font-family: var(--font-widget);
   font-size: 12px;
+  border: inherit;
+  color: black;
+  display: flex;
+  justify-content: space-around;
   align-items: center;
   padding: 0px;
 }
@@ -493,44 +526,45 @@
 }
 
 .netlogo-action-key {
-  color:    grey;
+  color: grey;
   position: absolute;
-  right:    6px;
-  top:      5px;
+  right: 6px;
+  top: 5px;
 }
 
 .netlogo-action-key.netlogo-focus {
   color: black;
 }
 
-.netlogo-button:active, .netlogo-forever-button.netlogo-active {
+.netlogo-button:active,
+.netlogo-forever-button.netlogo-active {
   background-color: gray;
   color: white;
 }
 
 .netlogo-forever-button .netlogo-forever-icon {
-  background-image:  url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCIgdmlld0JveD0iMCAwIDQzOC41NDIgNDM4LjU0MiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDM4LjU0MiA0MzguNTQyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQyNy40MDgsMTkuNjk3Yy03LjgwMy0zLjIzLTE0LjQ2My0xLjkwMi0xOS45ODYsMy45OTlsLTM3LjExNiwzNi44MzRDMzQ5Ljk0LDQxLjMwNSwzMjYuNjcyLDI2LjQxMiwzMDAuNSwxNS44NDggICBDMjc0LjMyOCw1LjI4NSwyNDcuMjUxLDAuMDAzLDIxOS4yNzEsMC4wMDNjLTI5LjY5MiwwLTU4LjA1Miw1LjgwOC04NS4wOCwxNy40MTdjLTI3LjAzLDExLjYxLTUwLjM0NywyNy4yMTUtNjkuOTUxLDQ2LjgyICAgYy0xOS42MDUsMTkuNjA3LTM1LjIxNCw0Mi45MjEtNDYuODI0LDY5Ljk0OUM1LjgwNywxNjEuMjE5LDAsMTg5LjU3NSwwLDIxOS4yNzFjMCwyOS42ODcsNS44MDcsNTguMDUsMTcuNDE3LDg1LjA3OSAgIGMxMS42MTMsMjcuMDMxLDI3LjIxOCw1MC4zNDcsNDYuODI0LDY5Ljk1MmMxOS42MDQsMTkuNTk5LDQyLjkyMSwzNS4yMDcsNjkuOTUxLDQ2LjgxOGMyNy4wMjgsMTEuNjExLDU1LjM4OCwxNy40MTksODUuMDgsMTcuNDE5ICAgYzMyLjczNiwwLDYzLjg2NS02Ljg5OSw5My4zNjMtMjAuN2MyOS41LTEzLjc5NSw1NC42MjUtMzMuMjYsNzUuMzc3LTU4LjM4NmMxLjUyLTEuOTAzLDIuMjM0LTQuMDQ1LDIuMTM2LTYuNDI0ICAgYy0wLjA4OS0yLjM3OC0wLjk5OS00LjMyOS0yLjcxMS01Ljg1MmwtMzkuMTA4LTM5LjM5OWMtMi4xMDEtMS43MTEtNC40NzMtMi41NjYtNy4xMzktMi41NjZjLTMuMDQ1LDAuMzgtNS4yMzIsMS41MjYtNi41NjYsMy40MjkgICBjLTEzLjg5NSwxOC4wODYtMzAuOTMsMzIuMDcyLTUxLjEwNyw0MS45NzdjLTIwLjE3Myw5Ljg5NC00MS41ODYsMTQuODM5LTY0LjIzNywxNC44MzljLTE5Ljc5MiwwLTM4LjY4NC0zLjg1NC01Ni42NzEtMTEuNTY0ICAgYy0xNy45ODktNy43MDYtMzMuNTUxLTE4LjEyNy00Ni42ODItMzEuMjYxYy0xMy4xMy0xMy4xMzUtMjMuNTUxLTI4LjY5MS0zMS4yNjEtNDYuNjgyYy03LjcwOC0xNy45ODctMTEuNTYzLTM2Ljg3NC0xMS41NjMtNTYuNjcxICAgYzAtMTkuNzk1LDMuODU4LTM4LjY5MSwxMS41NjMtNTYuNjc0YzcuNzA3LTE3Ljk4NSwxOC4xMjctMzMuNTQ3LDMxLjI2MS00Ni42NzhjMTMuMTM1LTEzLjEzNCwyOC42OTMtMjMuNTU1LDQ2LjY4Mi0zMS4yNjUgICBjMTcuOTgzLTcuNzA3LDM2Ljg3OS0xMS41NjMsNTYuNjcxLTExLjU2M2MzOC4yNTksMCw3MS40NzUsMTMuMDM5LDk5LjY0NiwzOS4xMTZsLTM5LjQwOSwzOS4zOTQgICBjLTUuOTAzLDUuNzExLTcuMjMxLDEyLjI3OS00LjAwMSwxOS43MDFjMy4yNDEsNy42MTQsOC44NTYsMTEuNDIsMTYuODU0LDExLjQyaDEyNy45MDZjNC45NDksMCw5LjIzLTEuODA3LDEyLjg0OC01LjQyNCAgIGMzLjYxMy0zLjYxNiw1LjQyLTcuODk4LDUuNDItMTIuODQ3VjM2LjU1QzQzOC41NDIsMjguNTU4LDQzNC44NCwyMi45NDMsNDI3LjQwOCwxOS42OTd6IiBmaWxsPSIjMDAwMDAwIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==);
+  background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCIgdmlld0JveD0iMCAwIDQzOC41NDIgNDM4LjU0MiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDM4LjU0MiA0MzguNTQyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQyNy40MDgsMTkuNjk3Yy03LjgwMy0zLjIzLTE0LjQ2My0xLjkwMi0xOS45ODYsMy45OTlsLTM3LjExNiwzNi44MzRDMzQ5Ljk0LDQxLjMwNSwzMjYuNjcyLDI2LjQxMiwzMDAuNSwxNS44NDggICBDMjc0LjMyOCw1LjI4NSwyNDcuMjUxLDAuMDAzLDIxOS4yNzEsMC4wMDNjLTI5LjY5MiwwLTU4LjA1Miw1LjgwOC04NS4wOCwxNy40MTdjLTI3LjAzLDExLjYxLTUwLjM0NywyNy4yMTUtNjkuOTUxLDQ2LjgyICAgYy0xOS42MDUsMTkuNjA3LTM1LjIxNCw0Mi45MjEtNDYuODI0LDY5Ljk0OUM1LjgwNywxNjEuMjE5LDAsMTg5LjU3NSwwLDIxOS4yNzFjMCwyOS42ODcsNS44MDcsNTguMDUsMTcuNDE3LDg1LjA3OSAgIGMxMS42MTMsMjcuMDMxLDI3LjIxOCw1MC4zNDcsNDYuODI0LDY5Ljk1MmMxOS42MDQsMTkuNTk5LDQyLjkyMSwzNS4yMDcsNjkuOTUxLDQ2LjgxOGMyNy4wMjgsMTEuNjExLDU1LjM4OCwxNy40MTksODUuMDgsMTcuNDE5ICAgYzMyLjczNiwwLDYzLjg2NS02Ljg5OSw5My4zNjMtMjAuN2MyOS41LTEzLjc5NSw1NC42MjUtMzMuMjYsNzUuMzc3LTU4LjM4NmMxLjUyLTEuOTAzLDIuMjM0LTQuMDQ1LDIuMTM2LTYuNDI0ICAgYy0wLjA4OS0yLjM3OC0wLjk5OS00LjMyOS0yLjcxMS01Ljg1MmwtMzkuMTA4LTM5LjM5OWMtMi4xMDEtMS43MTEtNC40NzMtMi41NjYtNy4xMzktMi41NjZjLTMuMDQ1LDAuMzgtNS4yMzIsMS41MjYtNi41NjYsMy40MjkgICBjLTEzLjg5NSwxOC4wODYtMzAuOTMsMzIuMDcyLTUxLjEwNyw0MS45NzdjLTIwLjE3Myw5Ljg5NC00MS41ODYsMTQuODM5LTY0LjIzNywxNC44MzljLTE5Ljc5MiwwLTM4LjY4NC0zLjg1NC01Ni42NzEtMTEuNTY0ICAgYy0xNy45ODktNy43MDYtMzMuNTUxLTE4LjEyNy00Ni42ODItMzEuMjYxYy0xMy4xMy0xMy4xMzUtMjMuNTUxLTI4LjY5MS0zMS4yNjEtNDYuNjgyYy03LjcwOC0xNy45ODctMTEuNTYzLTM2Ljg3NC0xMS41NjMtNTYuNjcxICAgYzAtMTkuNzk1LDMuODU4LTM4LjY5MSwxMS41NjMtNTYuNjc0YzcuNzA3LTE3Ljk4NSwxOC4xMjctMzMuNTQ3LDMxLjI2MS00Ni42NzhjMTMuMTM1LTEzLjEzNCwyOC42OTMtMjMuNTU1LDQ2LjY4Mi0zMS4yNjUgICBjMTcuOTgzLTcuNzA3LDM2Ljg3OS0xMS41NjMsNTYuNjcxLTExLjU2M2MzOC4yNTksMCw3MS40NzUsMTMuMDM5LDk5LjY0NiwzOS4xMTZsLTM5LjQwOSwzOS4zOTQgICBjLTUuOTAzLDUuNzExLTcuMjMxLDEyLjI3OS00LjAwMSwxOS43MDFjMy4yNDEsNy42MTQsOC44NTYsMTEuNDIsMTYuODU0LDExLjQyaDEyNy45MDZjNC45NDksMCw5LjIzLTEuODA3LDEyLjg0OC01LjQyNCAgIGMzLjYxMy0zLjYxNiw1LjQyLTcuODk4LDUuNDItMTIuODQ3VjM2LjU1QzQzOC41NDIsMjguNTU4LDQzNC44NCwyMi45NDMsNDI3LjQwOCwxOS42OTd6IiBmaWxsPSIjMDAwMDAwIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==);
   background-repeat: no-repeat;
-  background-size:   10px 10px;
-  bottom:            5px;
-  height:            10px;
-  position:          absolute;
-  right:             5px;
-  width:             10px;
+  background-size: 10px 10px;
+  bottom: 5px;
+  height: 10px;
+  position: absolute;
+  right: 5px;
+  width: 10px;
 
-  filter:            invert(1);
+  filter: invert(1);
 }
 
 .netlogo-disabled .netlogo-forever-icon {
   background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjE2cHgiIGhlaWdodD0iMTZweCIgdmlld0JveD0iMCAwIDQzOC41NDIgNDM4LjU0MiIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDM4LjU0MiA0MzguNTQyOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZD0iTTQyNy40MDgsMTkuNjk3Yy03LjgwMy0zLjIzLTE0LjQ2My0xLjkwMi0xOS45ODYsMy45OTlsLTM3LjExNiwzNi44MzRDMzQ5Ljk0LDQxLjMwNSwzMjYuNjcyLDI2LjQxMiwzMDAuNSwxNS44NDggICBDMjc0LjMyOCw1LjI4NSwyNDcuMjUxLDAuMDAzLDIxOS4yNzEsMC4wMDNjLTI5LjY5MiwwLTU4LjA1Miw1LjgwOC04NS4wOCwxNy40MTdjLTI3LjAzLDExLjYxLTUwLjM0NywyNy4yMTUtNjkuOTUxLDQ2LjgyICAgYy0xOS42MDUsMTkuNjA3LTM1LjIxNCw0Mi45MjEtNDYuODI0LDY5Ljk0OUM1LjgwNywxNjEuMjE5LDAsMTg5LjU3NSwwLDIxOS4yNzFjMCwyOS42ODcsNS44MDcsNTguMDUsMTcuNDE3LDg1LjA3OSAgIGMxMS42MTMsMjcuMDMxLDI3LjIxOCw1MC4zNDcsNDYuODI0LDY5Ljk1MmMxOS42MDQsMTkuNTk5LDQyLjkyMSwzNS4yMDcsNjkuOTUxLDQ2LjgxOGMyNy4wMjgsMTEuNjExLDU1LjM4OCwxNy40MTksODUuMDgsMTcuNDE5ICAgYzMyLjczNiwwLDYzLjg2NS02Ljg5OSw5My4zNjMtMjAuN2MyOS41LTEzLjc5NSw1NC42MjUtMzMuMjYsNzUuMzc3LTU4LjM4NmMxLjUyLTEuOTAzLDIuMjM0LTQuMDQ1LDIuMTM2LTYuNDI0ICAgYy0wLjA4OS0yLjM3OC0wLjk5OS00LjMyOS0yLjcxMS01Ljg1MmwtMzkuMTA4LTM5LjM5OWMtMi4xMDEtMS43MTEtNC40NzMtMi41NjYtNy4xMzktMi41NjZjLTMuMDQ1LDAuMzgtNS4yMzIsMS41MjYtNi41NjYsMy40MjkgICBjLTEzLjg5NSwxOC4wODYtMzAuOTMsMzIuMDcyLTUxLjEwNyw0MS45NzdjLTIwLjE3Myw5Ljg5NC00MS41ODYsMTQuODM5LTY0LjIzNywxNC44MzljLTE5Ljc5MiwwLTM4LjY4NC0zLjg1NC01Ni42NzEtMTEuNTY0ICAgYy0xNy45ODktNy43MDYtMzMuNTUxLTE4LjEyNy00Ni42ODItMzEuMjYxYy0xMy4xMy0xMy4xMzUtMjMuNTUxLTI4LjY5MS0zMS4yNjEtNDYuNjgyYy03LjcwOC0xNy45ODctMTEuNTYzLTM2Ljg3NC0xMS41NjMtNTYuNjcxICAgYzAtMTkuNzk1LDMuODU4LTM4LjY5MSwxMS41NjMtNTYuNjc0YzcuNzA3LTE3Ljk4NSwxOC4xMjctMzMuNTQ3LDMxLjI2MS00Ni42NzhjMTMuMTM1LTEzLjEzNCwyOC42OTMtMjMuNTU1LDQ2LjY4Mi0zMS4yNjUgICBjMTcuOTgzLTcuNzA3LDM2Ljg3OS0xMS41NjMsNTYuNjcxLTExLjU2M2MzOC4yNTksMCw3MS40NzUsMTMuMDM5LDk5LjY0NiwzOS4xMTZsLTM5LjQwOSwzOS4zOTQgICBjLTUuOTAzLDUuNzExLTcuMjMxLDEyLjI3OS00LjAwMSwxOS43MDFjMy4yNDEsNy42MTQsOC44NTYsMTEuNDIsMTYuODU0LDExLjQyaDEyNy45MDZjNC45NDksMCw5LjIzLTEuODA3LDEyLjg0OC01LjQyNCAgIGMzLjYxMy0zLjYxNiw1LjQyLTcuODk4LDUuNDItMTIuODQ3VjM2LjU1QzQzOC41NDIsMjguNTU4LDQzNC44NCwyMi45NDMsNDI3LjQwOCwxOS42OTd6IiBmaWxsPSIjODA4MDgwIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==);
-  filter:           unset;
+  filter: unset;
 }
 
 .netlogo-button-agent-context {
   font-size: 11px;
-  left:      8px;
-  position:  absolute;
-  top:       5px;
+  left: 8px;
+  position: absolute;
+  top: 5px;
 }
 
 .netlogo-disabled .netlogo-button-agent-content {
@@ -569,13 +603,46 @@
   font-family: var(--font-widget);
 }
 
+.netlogo-text-box {
+  background-color: white;
+  border: none;
+  margin: 0;
+  padding: 2px;
+  white-space: pre-wrap;
+  font-family: var(--font-widget);
+}
+
 /* These are for the new Markdown display capabilities, values chosen to appear somewhat similar to desktop. -Jeremy B
 June 2025 */
-.netlogo-note > h1, h2, h3, h4, h5, h6, div, p, ul {
+.netlogo-note > h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+p,
+ul {
   margin: 0;
 }
 
 .netlogo-note > ul {
+  padding-inline-start: 1.5em;
+}
+
+.netlogo-text-box > h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+p,
+ul {
+  margin: 0;
+}
+
+.netlogo-text-box > ul {
   padding-inline-start: 1.5em;
 }
 
@@ -602,19 +669,19 @@ June 2025 */
   position: relative;
 }
 
-input[type=checkbox]:checked ~ .netlogo-switcher-element {
+input[type='checkbox']:checked ~ .netlogo-switcher-element {
   background-color: var(--color-widget-switch-primary);
 }
 
-input[type=checkbox]:not(checked) ~ .netlogo-switcher-element {
+input[type='checkbox']:not(checked) ~ .netlogo-switcher-element {
   background-color: var(--color-widget-switch-off);
 }
 
-.netlogo-switcher:hover > input[type=checkbox]:checked ~ .netlogo-switcher-element {
+.netlogo-switcher:hover > input[type='checkbox']:checked ~ .netlogo-switcher-element {
   background-color: var(--color-widget-switch-primary-hover);
 }
 
-.netlogo-switcher:hover > input[type=checkbox]:not(checked) ~ .netlogo-switcher-element {
+.netlogo-switcher:hover > input[type='checkbox']:not(checked) ~ .netlogo-switcher-element {
   background-color: var(--color-widget-switch-off-hover);
 }
 
@@ -632,10 +699,10 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element {
 
   cursor: pointer;
 }
-input[type=checkbox]:checked ~ .netlogo-switcher-element > .netlogo-switcher-element-knob {
+input[type='checkbox']:checked ~ .netlogo-switcher-element > .netlogo-switcher-element-knob {
   top: 0;
 }
-input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switcher-element-knob {
+input[type='checkbox']:not(checked) ~ .netlogo-switcher-element > .netlogo-switcher-element-knob {
   top: calc(100% - var(--knob-size));
 }
 
@@ -649,10 +716,10 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 }
 
 .netlogo-slider:hover {
-    cursor: default;
+  cursor: default;
 }
 
-.netlogo-slider input[type=range] {
+.netlogo-slider input[type='range'] {
   background-color: transparent;
   height: 22px;
   margin: 0px;
@@ -676,7 +743,7 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 }
 
 .netlogo-slider-bar::after {
-  content: "";
+  content: '';
   display: block;
 
   position: absolute;
@@ -733,9 +800,9 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 }
 
 .netlogo-slider-label .netlogo-label {
+  background-color: transparent;
   flex: 1 1 auto;
   min-width: 0;
-  background-color: transparent;
 }
 
 .netlogo-slider-label .netlogo-slider-value {
@@ -744,10 +811,10 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .netlogo-slider-value-input {
   font-family: var(--font-widget);
-  font-size:   14px;
+  font-size: 14px;
 }
 
-.netlogo-slider-label input[type=number] {
+.netlogo-slider-label input[type='number'] {
   margin: 0px;
   border: 1px solid var(--color-widget-input-border);
   border-radius: 6px;
@@ -784,6 +851,10 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   overflow-x: hidden;
 }
 
+.netlogo-value {
+  overflow: hidden;
+}
+
 .netlogo-code {
   border: 1px solid black;
 }
@@ -801,22 +872,22 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .netlogo-multiline-input {
   flex-grow: 1;
-  height:    0; /* This is a hack to get Input widget labels the right heights in Firefox --Jason B. (11/23/17) */
-  width:     auto; /* This is a hack to get input type="number" widgets sized correctly in Firefox -Jeremy B. Jan 2018 */
-  margin:    4px;
-  resize:    none;
-  border:    1.5px solid var(--color-widget-input-border);
-  box-shadow:     0 1px 3px rgba(0,0,0,0.12);
-  border-radius:  4px;
+  height: 0; /* This is a hack to get Input widget labels the right heights in Firefox --Jason B. (11/23/17) */
+  width: auto; /* This is a hack to get input type="number" widgets sized correctly in Firefox -Jeremy B. Jan 2018 */
+  margin: 4px;
+  resize: none;
+  border: 1.5px solid var(--color-widget-input-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
   padding-inline: 0.2rem;
   font-family: var(--font-widget);
-  font-size:   12px;
+  font-size: 12px;
 }
 
-.netlogo-multiline-input[data-type=number] {
+.netlogo-multiline-input[data-type='number'] {
   color: #a42f00;
   font-family: monospace;
-  font-size:   14px;
+  font-size: 14px;
 }
 
 .netlogo-input-box > .netlogo-label {
@@ -825,8 +896,8 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .netlogo-singleline-input {
   flex-grow: 1;
-  margin:    4px;
-  resize:    none;
+  margin: 4px;
+  resize: none;
 }
 
 .netlogo-chooser {
@@ -898,6 +969,14 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   font-weight: bold;
 }
 
+.netlogo-widget-error {
+  color: red;
+}
+
+.netlogo-widget-error:hover {
+  cursor: pointer;
+}
+
 .CodeMirror {
   height: auto;
 }
@@ -908,81 +987,143 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .help-popup {
   background-color: white;
-  border:           1px solid black;
-  border-radius:    5px;
-  box-shadow:       0 0 10px rgba(0,0,0,0.5);
-  font-size:        20px;
-  padding:          30px 15px;
-  position:         absolute;
-  outline:          none;
-  z-index:          200;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  font-size: 20px;
+  position: absolute;
+  outline: none;
+  z-index: 200;
+  overflow-y: auto;
 }
 
-/* Credit for this keyboard table CSS goes to the fine folks at GitHub
- * Their code is released under the MIT license. Copyright (c) 2018 GitHub Inc.
- * https://assets-cdn.github.com/assets/github-ef9e6df593c3136722bd837c0437786d.css
- * Jason B. (5/7/18)
- */
-.help-key-table .help-keys {
-  padding-right: 10px;
-  text-align:    right;
-  white-space:   nowrap;
+.keyboard-help-content {
+  flex: 1;
+  overflow-y: visible;
 }
 
-.help-key-table td {
+.keyboard-help-table {
+  width: 100%;
+  border-collapse: collapse;
   font-size: 16px;
-  padding:   3px 0;
 }
 
-.help-key-table kbd {
-  background-color:    #fafbfc;
+.keyboard-help-table thead {
+  position: sticky;
+  top: 0;
+
+  border-bottom: 2px solid #dee2e6;
+}
+
+.keyboard-help-group-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+}
+
+.keyboard-help-group-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.keyboard-help-group-description {
+  font-size: 1rem;
+}
+
+.keyboard-help-table th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  padding: 12px 8px;
+  text-align: left;
+}
+
+.keyboard-help-table td {
+  border-bottom: 1px solid #dee2e6;
+  padding: 10px 8px;
+  vertical-align: top;
+}
+
+.keyboard-help-multiple {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.keyboard-help-key {
+  white-space: nowrap;
+  width: 200px;
+  padding-right: 15px;
+}
+
+kbd {
+  background-color: #fafbfc;
   border-bottom-color: #c6cbd1;
-  border-radius:       3px;
-  border:              solid 1px #d1d5da;
-  box-shadow:          inset 0 -1px 0 #c6cbd1;
-  color:               #3b793a;
-  display:             inline-block;
-  font:                16px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  line-height:         15px;
-  padding:             3px 5px;
-  vertical-align:      middle;
+  border-radius: 3px;
+  border: solid 1px #d1d5da;
+  box-shadow: inset 0 -1px 0 #c6cbd1;
+  color: #3b793a;
+  display: inline-block;
+  font: 14px 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  line-height: 1.2;
+  padding: 4px 6px;
+  margin: 0 2px;
+  vertical-align: middle;
+  user-select: none;
+}
+
+.keyboard-help-description {
+  color: #555;
+  line-height: 1.4;
+}
+
+.keyboard-help-empty {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 18px;
 }
 
 .modal-overlay {
-  background-color: rgba(200,200,200,0.7);
-  bottom:           0;
-  left:             0;
-  position:         absolute;
-  right:            0;
-  top:              0;
-  z-index:          99;
+  background-color: rgba(200, 200, 200, 0.7);
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 99;
 }
 
 .async-popup {
   background-color: white;
-  border:           1px solid black;
-  border-radius:    5px;
-  box-shadow:       0 0 10px rgba(0,0,0,0.5);
-  min-width:        120px;
-  padding:          10px 10px 0 14px;
-  position:         absolute;
-  outline:          none;
-  z-index:          90;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  min-width: 120px;
+  padding: 10px 10px 0 14px;
+  position: absolute;
+  outline: none;
+  z-index: 90;
 }
 
 .async-dialog-message {
-  font-size:   16px;
-  margin-top:  20px;
+  font-size: 16px;
+  margin-top: 20px;
   white-space: break-spaces;
-  word-break:  break-word;
+  word-break: break-word;
 }
 
 .async-dialog-button-row {
-  align-items:     center;
-  display:         flex;
-  flex-direction:  row;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
   justify-content: flex-end;
-  margin:          10px 0;
+  margin: 10px 0;
 }
 
 .async-dialog-controls {
@@ -994,9 +1135,9 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 }
 
 .h-center-flexbox {
-  align-items:     center;
-  display:         flex;
-  flex-direction:  row;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
   justify-content: center;
 }
 
@@ -1030,7 +1171,7 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .netlogo-modal-container.is-hidden {
   opacity: 0;
-  pointer-events: none!important;
+  pointer-events: none !important;
 }
 
 .netlogo-modal-title {
@@ -1064,7 +1205,7 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .netlogo-modal-content {
   overflow: auto;
-  flex: 1 1 auto;         /* take remaining space */
+  flex: 1 1 auto; /* take remaining space */
 }
 
 /* Old-size */
@@ -1078,7 +1219,7 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
   font-size: 12px;
 }
 
-.old-size .netlogo-slider-label input[type=number] {
+.old-size .netlogo-slider-label input[type='number'] {
   margin: 0px;
   border: 1px;
   padding: 0px;
@@ -1115,6 +1256,7 @@ input[type=checkbox]:not(checked) ~ .netlogo-switcher-element > .netlogo-switche
 
 .netlogo-chooser.old-size > .netlogo-chooser-select {
   padding: 2px 4px;
+  font-size: 12px;
 }
 
 .netlogo-switcher.old-size {
